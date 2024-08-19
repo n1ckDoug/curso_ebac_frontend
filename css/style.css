@@ -1,0 +1,92 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: aliceblue;
+}
+
+.container h1{
+    width: 320px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.container form label{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.container form{
+    background-color: white;
+    display: block;
+    width: 320px;
+    box-shadow: 3px 3px 3px 3px;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.container form input{
+    background-color: transparent;
+    border-width: 0;
+    border-bottom: 2px solid green;
+    outline-color: green;
+}
+
+.container form input,
+.container form button{
+    width: 100%;
+}
+
+.container form input{
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+.container form button{
+    padding: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    border: none;
+    background-color: green;
+    transition: .3s;
+}
+
+.container form button:hover{
+    background-color: #046104;
+}
+
+.succsses{
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: green;
+    color: white;
+}
+
+.numero-valido{
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: rgb(255, 166, 0);
+    color: white;
+}
+
+.erro{
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: red;
+    color: white;
+}
