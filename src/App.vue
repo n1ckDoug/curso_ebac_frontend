@@ -94,19 +94,38 @@ const getTarefasFiltradas = () => {
 </script>
 
 <template>
-  <div class="container mt-2">
-    <input @keyup="e => estado.n1 = e.target.value" class="form-control" type="number">
-    <input @keyup="e => estado.n2 = e.target.value" class="form-control" type="number">
+  <div class="calculadora">
+    <div class="container mt-5 p-5">
+      <h1 class="text-center mb-3">Calculadora automática</h1>
+      <input @keyup="e => estado.n1 = e.target.value" class="form-control mb-3" type="number">
+      <input @keyup="e => estado.n2 = e.target.value" class="form-control mb-3" type="number">
 
-    <select @change="e => estado.filtro = e.target.value" class="form-select">
-      <option value="adicao">Adição</option>
-      <option value="subtracao">Subtração</option>
-      <option value="mult">Multiplicação</option>
-      <option value="div">Divisão</option>
-    </select>
+      <select @change="e => estado.filtro = e.target.value" class="form-select mb-3">
+        <option value="adicao">Adição</option>
+        <option value="subtracao">Subtração</option>
+        <option value="mult">Multiplicação</option>
+        <option value="div">Divisão</option>
+      </select>
 
-    {{ getTarefasFiltradas() }}
+      <p class="fs-3">
+        <strong>Resultado:</strong> {{ getTarefasFiltradas() }}
+      </p>
+    </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.calculadora {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 550px;
+  background-color: #e7e7e7;
+  border-radius: 10px;
+}
+</style>
