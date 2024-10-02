@@ -1,127 +1,112 @@
-<script>
-export default {
-  name: 'App',
-  data() {
-    return {
-      result: '',
-      calculated: false
-    };
-  },
-  methods: {
-    handleClick(value) {
-      if (this.calculated) {
-        this.result = value;
-        this.calculated = false;
-      } else {
-        this.result += value;
-      }
+<script setup>
+
+import { reactive } from "vue";
+
+const estado = reactive({
+  filtro: 'adicao',
+  n1: 0,
+  n2: 0,
+  resTemp: '',
+  operadores: [
+    {
+      tipo: 'adição',
+      resultado: ''
     },
-    handleClear() {
-      this.result = '';
-      this.calculated = false;
+    {
+      tipo: 'subtração',
+      resultado: '0'
     },
-    handleClearEntry() {
-      if (this.result && this.result.length > 0) {
-        this.result = this.result.slice(0, -1);
-        if (this.result.length === 0) {
-          this.handleClear();
-        }
-      } else {
-        this.handleClear();
-      }
+    {
+      tipo: 'multiplicação',
+      resultado: '0'
     },
-    handleOperatorClick(operator) {
-      if (/[+*/-]$/.test(this.result)) {
-        this.result = this.result.slice(0, -1) + operator;
-      } else {
-        this.result += operator;
-      }
-      this.calculated = false;
-    },
-    calculate() {
-      try {
-        let evaluatedResult = eval(this.result.
-          replace(/(^|[^0-9])0+(\d+)/g, '$1$2'));
-        if (evaluatedResult === Infinity ||
-          evaluatedResult === -Infinity) {
-          throw new Error('Erro de divisão por zero');
-        }
-        this.result = Number.isFinite(evaluatedResult)
-          ? evaluatedResult : 'Error';
-        this.calculated = true;
-      } catch (error) {
-        if (error.message === 'Divide by zero error') {
-          this.result = 'Erro: dividir por zero';
-        } else {
-          this.result = 'Error';
-        }
-      }
+    {
+      tipo: 'divisão',
+      resultado: '0'
     }
+  ]
+});
+
+
+function funcAdicao() {
+  if (estado.operadores.filter(operadores => operadores.tipo === 'adição')) {
+    let numero1 = Number(estado.n1);
+    let numero2 = Number(estado.n2);
+    let res = estado.operadores.resultado;
+
+    res = numero1 + numero2;
+    return res;
+  };
+}
+
+function funcSubtracao() {
+  if (estado.operadores.filter(operadores => operadores.tipo === 'subtração')) {
+    let numero1 = Number(estado.n1);
+    let numero2 = Number(estado.n2);
+    let res = estado.operadores.resultado;
+
+    res = numero1 - numero2;
+    return res;
+  }
+}
+
+function funcMult() {
+  if (estado.operadores.filter(operadores => operadores.tipo === 'multiplicação')) {
+    let numero1 = Number(estado.n1);
+    let numero2 = Number(estado.n2);
+    let res = estado.operadores.resultado;
+
+    res = numero1 * numero2;
+    return res;
+  }
+}
+
+function funcDiv() {
+  if (estado.operadores.filter(operadores => operadores.tipo === 'divisão')) {
+    let numero1 = Number(estado.n1);
+    let numero2 = Number(estado.n2);
+    let res = estado.operadores.resultado;
+
+    res = numero1 / numero2;
+    return res;
+  }
+}
+
+const getTarefasFiltradas = () => {
+  const { filtro } = estado;
+
+  switch (filtro) {
+    case 'adicao':
+      return funcAdicao();
+    case 'subtracao':
+      return funcSubtracao();
+    case 'subtracao':
+      return funcSubtracao();
+    case 'mult':
+      return funcMult();
+    case 'div':
+      return funcDiv();
+    default:
+      return 'Escolha uma operação aritmética';
   }
 };
+
 </script>
 
 <template>
   <div class="container mt-2">
-    <div class="card bg-dark mx-auto">
-      <div class="card-body text-light fw-4">
-        <div class="">
-          <input style="background-color: transparent;" type="text" class="result painel  p-2 rounded" :value="result" readonly />
-        </div>
-        <div class="calculator-buttons mt-5">
-          <button class="btn btn-danger" @click="handleClear">C</button>
-          <button class="btn btn-light" @click="handleClearEntry">DEL</button>
-          <button class="btn btn-light" @click="handleOperatorClick('/')">÷</button>
-          <button class="btn btn-light" @click="handleOperatorClick('*')">x</button>
-          <button class="btn btn-light" @click="handleClick('7')">7</button>
-          <button class="btn btn-light" @click="handleClick('8')">8</button>
-          <button class="btn btn-light" @click="handleClick('9')">9</button>
-          <button class="btn btn-light" @click="handleOperatorClick('-')">-</button>
-          <button class="btn btn-light" @click="handleClick('4')">4</button>
-          <button class="btn btn-light" @click="handleClick('5')">5</button>
-          <button class="btn btn-light" @click="handleClick('6')">6</button>
-          <button class="btn btn-light" @click="handleOperatorClick('+')">+</button>
-          <button class="btn btn-light" @click="handleClick('1')">1</button>
-          <button class="btn btn-light" @click="handleClick('2')">2</button>
-          <button class="btn btn-light" @click="handleClick('3')">3</button>
-          <button class="btn btn-light" @click="handleClick('0')">0</button>
-          <button class="btn btn-light" @click="handleClick('.')">.</button>
-          <button class="btn btn-primary" style="grid-column: span 3;" @click="calculate()">=</button>
-        </div>
-      </div>
-    </div>
+    <input @keyup="e => estado.n1 = e.target.value" class="form-control" type="number">
+    <input @keyup="e => estado.n2 = e.target.value" class="form-control" type="number">
+
+    <select @change="e => estado.filtro = e.target.value" class="form-select">
+      <option value="adicao">Adição</option>
+      <option value="subtracao">Subtração</option>
+      <option value="mult">Multiplicação</option>
+      <option value="div">Divisão</option>
+    </select>
+
+    {{ getTarefasFiltradas() }}
   </div>
 </template>
 
-<style scoped>
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 98vh;
-}
-
-.painel {
-  font-size: 1.6em;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  color: #0f0;
-  padding: 8px;
-  border-radius: 5px;
-  text-align: right;
-  height: 6.3rem;
-  text-shadow: 0 0 10px rgba(0, 255, 0, .5);
-  border: 3px solid #222222;
-  border-bottom: 2px solid rgb(73, 73, 73);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.calculator-buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  font-weight: 600;
-}
-</style>
+<style scoped></style>
